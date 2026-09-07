@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base typography — Inter for clarity outdoors ──────────────── */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus-visible ring for keyboard users ─────────────────────── */
+*:focus-visible {
+  outline: 3px solid #22c55e;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Pulse ring animation for the upload zone ──────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45); }
+  70%  { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Shimmer loading skeleton ──────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ── Confidence bar grow-in ────────────────────────────────────── */
+@keyframes grow-width {
+  from { width: 0%; }
+}
+.animate-grow {
+  animation: grow-width 0.8s ease-out forwards;
+}

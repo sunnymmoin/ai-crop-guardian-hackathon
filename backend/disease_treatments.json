@@ -1,0 +1,154 @@
+{
+    "Apple___Apple_scab": {
+        "pesticide": "Apply Captan or Mancozeb fungicides.",
+        "dosage": "Spray every 7-10 days from green tip stage until petals fall."
+    },
+    "Apple___Black_rot": {
+        "pesticide": "Prune infected branches and apply Captan fungicide.",
+        "dosage": "2 tablespoons per gallon applied during the pink bud stage."
+    },
+    "Apple___Cedar_apple_rust": {
+        "pesticide": "Apply Myclobutanil or Copper-based fungicides.",
+        "dosage": "Spray when blossom buds show pink and repeat every 7-10 days."
+    },
+    "Apple___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain routine pruning and monitoring."
+    },
+    "Blueberry___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain soil acidity (pH 4.5-5.5) and routine watering."
+    },
+    "Cherry_(including_sour)___Powdery_mildew": {
+        "pesticide": "Apply Sulfur or Potassium Bicarbonate sprays.",
+        "dosage": "Spray every 10-14 days at first sign of white powdery spots."
+    },
+    "Cherry_(including_sour)___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Ensure good air circulation and routine watering."
+    },
+    "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+        "pesticide": "Apply Pyraclostrobin or Azoxystrobin fungicides.",
+        "dosage": "Apply at tasseling (VT stage) if lesions reach the ear leaf."
+    },
+    "Corn_(maize)___Common_rust": {
+        "pesticide": "Apply Mancozeb or Propiconazole.",
+        "dosage": "Spray when pustules first appear on leaves, repeating after 7-14 days."
+    },
+    "Corn_(maize)___Northern_Leaf_Blight": {
+        "pesticide": "Apply Chlorothalonil or Azoxystrobin.",
+        "dosage": "Apply before tasseling if lesions are actively spreading."
+    },
+    "Corn_(maize)___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain proper nitrogen levels and soil moisture."
+    },
+    "Grape___Black_rot": {
+        "pesticide": "Apply Mancozeb or Myclobutanil.",
+        "dosage": "Spray every 10-14 days starting when shoots are 2-4 inches long."
+    },
+    "Grape___Esca_(Black_Measles)": {
+        "pesticide": "No effective chemical cure. Prune out infected wood.",
+        "dosage": "Burn or discard infected wood immediately. Apply wound sealant after pruning."
+    },
+    "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+        "pesticide": "Apply Copper-based fungicides.",
+        "dosage": "Spray after harvest to protect foliage and reduce overwintering spores."
+    },
+    "Grape___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain canopy management for adequate airflow."
+    },
+    "Orange___Haunglongbing_(Citrus_greening)": {
+        "pesticide": "Control Asian citrus psyllid vector with Imidacloprid.",
+        "dosage": "Apply as a soil drench prior to new flush growth. Remove severely infected trees."
+    },
+    "Peach___Bacterial_spot": {
+        "pesticide": "Apply Copper or Oxytetracycline.",
+        "dosage": "Apply Copper at leaf drop in fall, and Oxytetracycline starting at petal fall."
+    },
+    "Peach___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain routine pruning and monitoring."
+    },
+    "Pepper,_bell___Bacterial_spot": {
+        "pesticide": "Apply Copper fungicides mixed with Mancozeb.",
+        "dosage": "Spray every 7-10 days during warm, wet weather."
+    },
+    "Pepper,_bell___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain even soil moisture and monitor for aphids."
+    },
+    "Potato___Early_blight": {
+        "pesticide": "Apply Mancozeb or Chlorothalonil based fungicides.",
+        "dosage": "Spray every 7-10 days upon first sign of leaf spots; ensure complete foliage coverage."
+    },
+    "Potato___Late_blight": {
+        "pesticide": "Apply Copper-based fungicides or Chlorothalonil.",
+        "dosage": "Apply every 5-7 days during wet weather conditions."
+    },
+    "Potato___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain routine watering and monitoring."
+    },
+    "Raspberry___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Prune old canes after harvest to maintain airflow."
+    },
+    "Soybean___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Monitor for root rot in poorly drained soils."
+    },
+    "Squash___Powdery_mildew": {
+        "pesticide": "Apply Neem oil, Sulfur, or Potassium Bicarbonate.",
+        "dosage": "Spray thoroughly on upper and lower leaf surfaces every 7-10 days."
+    },
+    "Strawberry___Leaf_scorch": {
+        "pesticide": "Apply protective fungicides like Captan or Myclobutanil.",
+        "dosage": "Spray every 7-14 days starting at early bloom. Ensure good weed control for airflow."
+    },
+    "Strawberry___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain mulch layer to keep fruit off the soil."
+    },
+    "Tomato___Bacterial_spot": {
+        "pesticide": "Apply Copper fungicides mixed with Mancozeb.",
+        "dosage": "Spray every 7-10 days, avoiding overhead watering."
+    },
+    "Tomato___Early_blight": {
+        "pesticide": "Apply Mancozeb or Copper-based fungicides. Remove infected lower leaves.",
+        "dosage": "Spray every 7-14 days starting when disease first appears."
+    },
+    "Tomato___Late_blight": {
+        "pesticide": "Apply Copper fungicide or Chlorothalonil immediately.",
+        "dosage": "1 tablespoon per gallon of water, applied every 7 days until harvest."
+    },
+    "Tomato___Leaf_Mold": {
+        "pesticide": "Apply Chlorothalonil or Copper fungicides.",
+        "dosage": "Improve ventilation in greenhouses; spray every 7-10 days if symptoms spread."
+    },
+    "Tomato___Septoria_leaf_spot": {
+        "pesticide": "Apply Chlorothalonil or Mancozeb.",
+        "dosage": "Spray every 7-10 days upon first sign of spots on lower leaves."
+    },
+    "Tomato___Spider_mites Two-spotted_spider_mite": {
+        "pesticide": "Apply Horticultural oil, Neem oil, or Miticides.",
+        "dosage": "Spray every 5-7 days, focusing heavily on the undersides of leaves."
+    },
+    "Tomato___Target_Spot": {
+        "pesticide": "Apply Azoxystrobin or Chlorothalonil.",
+        "dosage": "Spray every 7-14 days; ensure adequate spacing between plants."
+    },
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+        "pesticide": "Control whitefly vectors using Insecticidal soap or Imidacloprid.",
+        "dosage": "No cure for the virus. Remove and destroy infected plants immediately to prevent spread."
+    },
+    "Tomato___Tomato_mosaic_virus": {
+        "pesticide": "No chemical cure available.",
+        "dosage": "Remove and destroy infected plants. Wash hands and tools thoroughly to prevent mechanical transmission."
+    },
+    "Tomato___healthy": {
+        "pesticide": "No intervention required.",
+        "dosage": "Maintain consistent watering and stake plants to keep leaves off the ground."
+    }
+}

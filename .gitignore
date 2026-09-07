@@ -1,0 +1,26 @@
+# Node/React
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+
+# Python/FastAPI
+backend/__pycache__/
+backend/venv/
+backend/env/
+backend/.env
+backend/.env.*
+
+# Large Machine Learning Models & Datasets
+backend/*.pt
+backend/*.pth
+backend/*.h5
+*.zip
+backend/ml_pipeline/**/*.JPG
+backend/ml_pipeline/**/*.jpg
+backend/ml_pipeline/**/*.png
+backend/ml_pipeline/crop_dataset/
+
+# OS generated files
+.DS_Store
+Thumbs.db
