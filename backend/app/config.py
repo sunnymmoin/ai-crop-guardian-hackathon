@@ -2,34 +2,37 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Annotated
 
-from pydantic import field_validator
+from pydantic import Field, ValidationError, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+ENV_FILE = BACKEND_DIR / ".env"
 
 
 class Settings(BaseSettings):
-    """All runtime configuration. The defaults below run the project as-is, with no .env file.
-    Any value can still be overridden with an environment variable of the same name."""
+    """All runtime configuration, read from environment variables or backend/.env.
+
+    Private values (database URI, secrets, admin list) have no default and must be set.
+    See backend/.env.example for every setting with an explanation."""
 
     model_config = SettingsConfigDict(
-        env_file=BACKEND_DIR / ".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
         extra="ignore",
         protected_namespaces=("settings_",),
     )
 
-    # --- Database (the team's shared MongoDB Atlas cluster) ---
-    mongo_uri: str = "mongodb+srv://sunnymmoin_db_user:fXDkuLCtz1Y2dhVI@cluster0.dh3tmxx.mongodb.net/?retryWrites=true&w=majority"
+    # --- Database ---
+    mongo_uri: str = Field(min_length=1)
     mongo_db: str = "crop_guardian_db"
     seed_crops: bool = True
 
-    # --- Auth (demo credentials, listed in README) ---
-    jwt_secret: str = "ai-crop-guardian-demo-jwt-secret-2026"
+    # --- Auth ---
+    jwt_secret: str = Field(min_length=32)
     jwt_algorithm: str = "HS256"
     jwt_expire_days: int = 30
-    admin_phones: Annotated[list[str], NoDecode] = ["03000000001"]
-    admin_key: str = "cropguardian-admin-2026"
+    admin_phones: Annotated[list[str], NoDecode]
+    admin_key: str = Field(min_length=8)
 
     # --- HTTP ---
     cors_origins: Annotated[list[str], NoDecode] = [
@@ -59,4 +62,14 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    try:
+        return Settings()
+    except ValidationError as exc:
+        problems = []
+        for err in exc.errors():
+            name = str(err["loc"][0]).upper()
+            problems.append(f"{name} is missing" if err["type"] == "missing" else f"{name}: {err['msg']}")
+        raise RuntimeError(
+            "Backend settings are incomplete: " + "; ".join(problems) + ". "
+            f"Copy backend/.env.example to {ENV_FILE} and fill in the values."
+        ) from None

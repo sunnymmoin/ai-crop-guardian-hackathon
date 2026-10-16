@@ -19,13 +19,32 @@ AI crop-disease diagnosis for Pakistani farmers. A farmer uploads a leaf photo a
 
 ---
 
-## How to run (no .env needed)
-
-Everything is already configured in `backend/app/config.py`. You do **not** need to create a `.env` file or a database.
+## How to run
 
 You need **Python 3.12** and **Node.js 18+**.
 
-### 1. Start the backend
+### 1. Create the `.env` files
+
+All settings come from `.env` files. Private values (database password, secrets) live **only** in these files, and git ignores them, so they never go to GitHub.
+
+| File | Copy from | What to fill in |
+|---|---|---|
+| `backend/.env` | `backend/.env.example` | `MONGO_URI`, `JWT_SECRET`, `ADMIN_KEY` (required). Ask the team lead for the values. |
+| `frontend/.env` | `frontend/.env.example` | Nothing for local development; the defaults work. |
+
+On Windows:
+
+```bash
+copy backend\.env.example backend\.env
+```
+
+```bash
+copy frontend\.env.example frontend\.env
+```
+
+Then open `backend/.env` and fill in the required lines. If something is missing, the backend refuses to start and tells you exactly which value it needs.
+
+### 2. Start the backend
 
 Open a terminal in the `backend` folder:
 
@@ -40,7 +59,7 @@ You only need the first three commands the first time. After that, just activate
 
 Check it at http://127.0.0.1:8000/api/health. It should say `"database": "up"`. Interactive API docs are at http://127.0.0.1:8000/docs.
 
-### 2. Start the frontend
+### 3. Start the frontend
 
 Open a second terminal in the `frontend` folder:
 
@@ -49,9 +68,9 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173** in the browser. The frontend forwards `/api` calls to the backend on port 8000.
+Open **http://localhost:5173** in the browser. The frontend forwards `/api` calls to the backend (`API_PROXY_TARGET` in `frontend/.env`).
 
-### 3. Add the demo data (once)
+### 4. Add the demo data (once)
 
 In the `backend` folder, with the virtual environment active:
 
@@ -83,7 +102,7 @@ Farmers log in with their **phone number only**; there is no password. Click **F
 
 | Role | Name | Phone | District | Password |
 |---|---|---|---|---|
-| **Admin** | Crop Guardian Admin | `03000000001` | Karachi | Admin Key: `cropguardian-admin-2026` |
+| **Admin** | Crop Guardian Admin | `03000000001` | Karachi | Admin Key = the `ADMIN_KEY` value in `backend/.env` |
 | Farmer | Ghulam Rasool | `03000000002` | Multan | none (phone only) |
 | Farmer | Ayesha Bibi | `03000000003` | Sukkur | none (phone only) |
 | Farmer | Muhammad Akram | `03000000004` | Hyderabad | none (phone only) |
@@ -91,7 +110,7 @@ Farmers log in with their **phone number only**; there is no password. Click **F
 | Farmer | Abdul Sattar | `03000000006` | Rahim Yar Khan | none (phone only) |
 | Farmer | Nasreen Akhtar | `03000000007` | Shaheed Benazirabad | none (phone only) |
 
-**Admin login:** enter `03000000001` as the phone and `cropguardian-admin-2026` in the **Admin Key** field. Only the admin can open the **B2B Analytics** tab and launch ad campaigns.
+**Admin login:** enter `03000000001` as the phone and your `ADMIN_KEY` in the **Admin Key** field. Only the admin can open the **B2B Analytics** tab and launch ad campaigns. The admin phone must be listed in `ADMIN_PHONES` in `backend/.env`.
 
 A new farmer can also register from the same login form with any phone number.
 
@@ -106,21 +125,40 @@ A new farmer can also register from the same login form with any phone number.
 
 All demo rows have `is_sample: true`, so they are easy to find in MongoDB Compass and `--clear` removes only them.
 
-## Configuration
+## Configuration reference
 
-All settings live in `backend/app/config.py`:
+`backend/app/config.py` reads every setting from `backend/.env` (or from environment variables with the same name, which win over the file). Private values have **no default** in the code.
 
-| Setting | Value |
-|---|---|
-| `mongo_uri` | The team's MongoDB Atlas cluster (`cluster0.dh3tmxx.mongodb.net`, user `sunnymmoin_db_user`) |
-| `mongo_db` | `crop_guardian_db` |
-| `admin_phones` | `03000000001` |
-| `admin_key` | `cropguardian-admin-2026` |
-| `jwt_secret` | Fixed demo secret, so logins survive a backend restart |
-| `cors_origins` | `http://localhost:5173`, `http://127.0.0.1:5173` |
-| `model_path` | `backend/crop_model.pt` |
+**Backend (`backend/.env`)**
 
-To change a value, edit `config.py`. On a server you can instead set an environment variable with the same name in capitals (for example `MONGO_URI`).
+| Variable | Required | Default | Meaning |
+|---|---|---|---|
+| `MONGO_URI` | yes | – | MongoDB connection string (Atlas or `mongodb://localhost:27017`) |
+| `MONGO_DB` | no | `crop_guardian_db` | Database name |
+| `SEED_CROPS` | no | `true` | Load the 100 crop cards on startup if the collection is empty |
+| `JWT_SECRET` | yes | – | At least 32 random characters; signs login tokens |
+| `JWT_EXPIRE_DAYS` | no | `30` | How long a login stays valid |
+| `ADMIN_PHONES` | yes | – | Comma-separated admin phone numbers |
+| `ADMIN_KEY` | yes | – | At least 8 characters; typed by admins at login |
+| `CORS_ORIGINS` | no | `http://localhost:5173,http://127.0.0.1:5173` | Frontend URLs allowed to call the API |
+| `RATE_LIMIT_AUTH_PER_MIN` | no | `10` | Login/register attempts per IP per minute |
+| `RATE_LIMIT_PREDICT_PER_MIN` | no | `30` | Diagnoses per IP per minute |
+| `MODEL_PATH` | no | `crop_model.pt` | Trained model file, relative to `backend/` |
+| `CONFIDENCE_THRESHOLD` | no | `0.5` | Below this, the photo is "Unrecognized Image" |
+| `MAX_UPLOAD_MB` | no | `5` | Largest photo accepted |
+
+A new `JWT_SECRET` can be generated with:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+**Frontend (`frontend/.env`)**
+
+| Variable | When | Meaning |
+|---|---|---|
+| `API_PROXY_TARGET` | `npm run dev` | Where `/api` calls are forwarded (default `http://127.0.0.1:8000`) |
+| `VITE_API_URL` | production build | Full backend URL ending in `/api`. Leave empty locally. |
 
 ---
 
@@ -140,16 +178,17 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-The tests need MongoDB installed locally at `mongodb://localhost:27017`. They use a throwaway `crop_guardian_test` database, which is deleted afterwards. They never touch Atlas.
+The tests need MongoDB installed locally at `mongodb://localhost:27017`. They set their own settings, use a throwaway `crop_guardian_test` database that is deleted afterwards, and never touch Atlas or your `.env` values.
 
 ## Project structure
 
 ```
 backend/
   main.py                 # entry point: `uvicorn main:app`
+  .env.example            # every backend setting, explained
   app/
     main.py               # app factory: middleware, routers, startup
-    config.py             # all settings (database, admin, secrets)
+    config.py             # reads settings from backend/.env
     db.py                 # MongoDB connection, indexes, crop seeding
     deps.py               # route guards: login, admin, rate limits
     middleware.py         # request ID / timing / logging, error format
@@ -161,6 +200,7 @@ backend/
   disease_treatments.json # 38 diseases with English + Urdu treatments
   crop_profiles.json      # 100 crop cards
 frontend/
+  .env.example            # frontend settings, explained
   src/App.jsx             # the whole UI
   src/api/client.js       # every backend call goes through here
 ```
@@ -184,8 +224,8 @@ All routes are under `/api`. Errors always come back as `{"detail": "...", "requ
 | POST | `/whatsapp/webhook` | Twilio | Placeholder WhatsApp reply |
 
 **Middleware**
-- **Global**: CORS for `cors_origins`, request ID + timing headers with one log line per request, gzip, and a consistent JSON error format (including 500s).
-- **Per route** (FastAPI dependencies): JWT login check, admin check, in-memory rate limits, and image validation (type, 5 MB size limit, Pillow check).
+- **Global**: CORS for `CORS_ORIGINS`, request ID + timing headers with one log line per request, gzip, and a consistent JSON error format (including 500s).
+- **Per route** (FastAPI dependencies): JWT login check, admin check, in-memory rate limits, and image validation (type, size limit, Pillow check).
 
 ## Deploying
 
@@ -193,14 +233,16 @@ All routes are under `/api`. Errors always come back as `{"detail": "...", "requ
   - Root directory: `backend`
   - Build command: `pip install -r requirements.txt`
   - Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"`
-  - Add the frontend URL to `cors_origins` in `config.py`.
+  - Add every variable from `backend/.env` in the dashboard's Environment section. Add the frontend URL to `CORS_ORIGINS`.
 - **Frontend (e.g. Vercel)**
   - Root directory: `frontend`
-  - Set the environment variable `VITE_API_URL=https://<your-backend>/api`
+  - Set `VITE_API_URL=https://<your-backend>/api` in the project's environment variables.
 
-## Security note
+## Security
 
-The database password, admin key and JWT secret are written in `config.py` and in this README, so anyone who can see this repository can read, change or delete the database and log in as admin. This is fine for a hackathon demo. Before real farmers use the app, change the Atlas password and move these values to environment variables.
+- Never commit `.env` files; `.gitignore` already blocks them. Share them privately (for example in a direct message), not in the repo or a group chat.
+- Older commits on GitHub contain the previous Atlas password, so change it in Atlas (**Database Access**, then edit the user) and update `MONGO_URI` in everyone's `backend/.env`.
+- Farmers log in with a phone number only, so anyone who knows a number can open that account. Admin access also requires `ADMIN_KEY`.
 
 ## License
 
