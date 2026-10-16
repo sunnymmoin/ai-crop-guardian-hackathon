@@ -3,21 +3,33 @@ frontend/node_modules/
 frontend/dist/
 frontend/.env
 frontend/.env.*
+!frontend/.env.example
 
 # Python/FastAPI
-backend/__pycache__/
+__pycache__/
+*.pyc
+.pytest_cache/
 backend/venv/
 backend/env/
+backend/.venv/
 backend/.env
 backend/.env.*
+!backend/.env.example
+
+# Local databases and uploads
+*.db
+*.sqlite3
+backend/uploads/
 
 # Large Machine Learning Models & Datasets
 backend/*.pt
 backend/*.pth
 backend/*.h5
 *.zip
+*.exe
 backend/ml_pipeline/**/*.JPG
 backend/ml_pipeline/**/*.jpg
+backend/ml_pipeline/**/*.jpeg
 backend/ml_pipeline/**/*.png
 backend/ml_pipeline/crop_dataset/
 

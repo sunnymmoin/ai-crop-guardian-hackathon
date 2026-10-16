@@ -6,8 +6,11 @@ import {
   ThermometerSun, Banknote, Mic, MicOff, Volume2, Languages, BarChart3, Activity, 
   Map, Download, Building2, Users, AlertCircle, UserCheck, PhoneCall, Video, 
   CreditCard, Check, Clock, Sparkles, Smartphone, MessageCircle, QrCode, ExternalLink,
-  Camera, User, LogIn, LogOut, Shield, Navigation, PlusCircle, Megaphone, Radio
+  Camera, User, LogIn, LogOut, Shield, Navigation, PlusCircle, Megaphone, Radio, Lock
 } from 'lucide-react';
+import {
+  authApi, analyticsApi, cultivationApi, diagnoseLeaf, errorMessage, session, setUnauthorizedHandler
+} from './api/client';
 
 const uiText = {
   'en-US': {
@@ -70,7 +73,16 @@ const uiText = {
     waInputPlaceholder: 'Type or speak your question...',
     listenMsg: 'Listen Audio',
     addCropBtn: '➕ Add New Crop Card',
-    searchCropPlaceholder: 'Search 100+ crops (e.g. Wheat, Tomato, Mango)...'
+    searchCropPlaceholder: 'Search 100+ crops (e.g. Wheat, Tomato, Mango)...',
+    demoBadge: 'Demo result – AI model not loaded on the server',
+    confidenceLabel: 'AI Confidence',
+    diagnoseError: 'Diagnosis failed. Please check your connection and try again.',
+    adminKeyLabel: 'Admin Key (admins only)',
+    b2bRestrictedTitle: 'Admin Access Required',
+    b2bRestrictedDesc: 'B2B analytics are only available to AI Crop Guardian administrators. Log in with an admin phone number and the admin key.',
+    loginRequired: 'Please log in first to save to the database.',
+    noScansYet: 'No scans recorded yet. Districts appear here as logged-in farmers run diagnostics.',
+    noAdsYet: 'No ad campaigns yet. Launch the first one above.'
   },
   'ur-PK': {
     title: 'اے آئی کراپ گارڈین',
@@ -132,18 +144,36 @@ const uiText = {
     waInputPlaceholder: 'سوال لکھیں یا بولیں...',
     listenMsg: 'ہدایت سنیں',
     addCropBtn: '➕ نیا کراپ کارڈ شامل کریں',
-    searchCropPlaceholder: '100+ فصلیں تلاش کریں (مثلاً گندم، ٹماٹر، آم)...'
+    searchCropPlaceholder: '100+ فصلیں تلاش کریں (مثلاً گندم، ٹماٹر، آم)...',
+    demoBadge: 'ڈیمو نتیجہ – سرور پر اے آئی ماڈل لوڈ نہیں ہے',
+    confidenceLabel: 'اے آئی کا اعتماد',
+    diagnoseError: 'تشخیص نہیں ہو سکی۔ انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔',
+    adminKeyLabel: 'ایڈمن کی (صرف ایڈمن کے لیے)',
+    b2bRestrictedTitle: 'صرف ایڈمن کے لیے',
+    b2bRestrictedDesc: 'بی ٹو بی تجزیات صرف اے آئی کراپ گارڈین کے ایڈمن دیکھ سکتے ہیں۔ ایڈمن فون نمبر اور ایڈمن کی کے ساتھ لاگ ان کریں۔',
+    loginRequired: 'ڈیٹا بیس میں محفوظ کرنے کے لیے پہلے لاگ ان کریں۔',
+    noScansYet: 'ابھی کوئی ٹیسٹ ریکارڈ نہیں ہوا۔ جب لاگ ان کسان تشخیص کریں گے تو اضلاع یہاں نظر آئیں گے۔',
+    noAdsYet: 'ابھی کوئی اشتہاری مہم نہیں۔ اوپر سے پہلی مہم شروع کریں۔'
   }
 };
 
-const districtData = [
-  { district: 'Sukkur (سکھر)', crop: 'Tomato & Cotton', disease: 'Early Blight', severity: 82, level: 'high', scans: 412 },
-  { district: 'Hyderabad (حیدرآباد)', crop: 'Chili & Wheat', disease: 'Leaf Mold', severity: 64, level: 'med', scans: 328 },
-  { district: 'Multan (ملتان)', crop: 'Mango & Potato', disease: 'Late Blight', severity: 76, level: 'high', scans: 510 },
-  { district: 'Shaheed Benazirabad (نواب شاہ)', crop: 'Sugarcane', disease: 'Rust', severity: 28, level: 'low', scans: 194 },
-  { district: 'Mirpurkhas (میرپور خاص)', crop: 'Banana & Tomato', disease: 'Yellow Curl Virus', severity: 55, level: 'med', scans: 275 },
-  { district: 'Rahim Yar Khan (رحیم یار خان)', crop: 'Cotton & Wheat', disease: 'Healthy / Low Risk', severity: 15, level: 'low', scans: 380 }
-];
+const formatPKR = (amount) => {
+  if (!amount) return 'Rs. 0';
+  if (amount >= 1_000_000) return `Rs. ${(amount / 1_000_000).toFixed(2)}M`;
+  if (amount >= 1_000) return `Rs. ${Math.round(amount / 1_000)}K`;
+  return `Rs. ${amount}`;
+};
+
+const buildSpeechText = (data, lang) => (lang === 'ur-PK'
+  ? `تشخیص شدہ بیماری: ${data.disease_ur}۔ علاج: ${data.recommendation_ur.pesticide}۔ مقدار: ${data.recommendation_ur.dosage}`
+  : `Detected condition: ${data.disease_en}. Treatment: ${data.recommendation_en.pesticide}. Dosage: ${data.recommendation_en.dosage}`);
+
+const buildWhatsappReply = (data, lang) => {
+  const demoNote = data.mode === 'demo' ? (lang === 'ur-PK' ? '\n\n⚠️ ڈیمو نتیجہ' : '\n\n⚠️ Demo result') : '';
+  return lang === 'ur-PK'
+    ? `🌿 *تشخیصی رپورٹ (AI Crop Guardian)*\n\n🔍 *بیماری:* ${data.disease_ur}\n💊 *دوا:* ${data.recommendation_ur.pesticide}\n📋 *طریقہ:* ${data.recommendation_ur.dosage}${demoNote}`
+    : `🌿 *Diagnostic Report (AI Crop Guardian)*\n\n🔍 *Disease:* ${data.disease_en}\n💊 *Treatment:* ${data.recommendation_en.pesticide}\n📋 *Dosage:* ${data.recommendation_en.dosage}${demoNote}`;
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('diagnostics'); 
@@ -153,13 +183,15 @@ export default function App() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [diagnoseError, setDiagnoseError] = useState('');
   const [profiles, setProfiles] = useState({});
   const [cropSearch, setCropSearch] = useState('');
   const [browserVoices, setBrowserVoices] = useState([]);
 
-  // Ads & Analytics State
+  // Ads & Analytics State (admin only)
   const [adCampaigns, setAdCampaigns] = useState([]);
-  const [totalScansCount, setTotalScansCount] = useState(0);
+  const [analyticsSummary, setAnalyticsSummary] = useState(null);
+  const [heatmapRows, setHeatmapRows] = useState([]);
   const [isAddAdModalOpen, setIsAddAdModalOpen] = useState(false);
   const [newAdForm, setNewAdForm] = useState({ title: '', target_district: 'Sukkur', budget: 'Rs. 20,000' });
   const [addAdStatus, setAddAdStatus] = useState('');
@@ -171,10 +203,10 @@ export default function App() {
   });
   const [addCropStatus, setAddCropStatus] = useState('');
 
-  // Auth States
-  const [currentUser, setCurrentUser] = useState(null);
+  // Auth States (restored from the saved session, then re-checked with the backend)
+  const [currentUser, setCurrentUser] = useState(() => (session.token ? session.user : null));
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authForm, setAuthForm] = useState({ name: '', phone: '', district: 'Karachi' });
+  const [authForm, setAuthForm] = useState({ name: '', phone: '', district: 'Karachi', admin_key: '' });
   const [authError, setAuthError] = useState('');
   const [detectingLocation, setDetectingLocation] = useState(false);
 
@@ -188,39 +220,47 @@ export default function App() {
   const [waProcessing, setWaProcessing] = useState(false);
 
   const t = uiText[selectedLang];
+  const isAdmin = currentUser?.role === 'admin';
 
   const fetchCultivationProfiles = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8001/cultivation');
-      if (response.ok) {
-        const data = await response.json();
-        setProfiles(data);
-      }
+      setProfiles(await cultivationApi.list());
     } catch (err) {
       console.error("Failed to fetch cultivation profiles from backend.", err);
     }
   };
 
-  const fetchUserAnalytics = async () => {
+  const fetchAnalytics = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8001/analytics/users');
-      if (response.ok) {
-        const data = await response.json();
-        setTotalScansCount(data.total_ai_scans || 0);
-      }
-      const adResponse = await fetch('http://127.0.0.1:8001/analytics/ads');
-      if (adResponse.ok) {
-        const adsData = await adResponse.json();
-        setAdCampaigns(adsData);
-      }
+      const [summary, heatmap, ads] = await Promise.all([
+        analyticsApi.summary(), analyticsApi.heatmap(), analyticsApi.ads()
+      ]);
+      setAnalyticsSummary(summary);
+      setHeatmapRows(heatmap);
+      setAdCampaigns(ads);
     } catch (err) {
       console.error("Failed to fetch analytics from database:", err);
     }
   };
 
+  const handleLogout = () => {
+    session.clear();
+    setCurrentUser(null);
+  };
+
   useEffect(() => {
     fetchCultivationProfiles();
-    fetchUserAnalytics();
+
+    // If the backend rejects the saved token, show the user as logged out.
+    setUnauthorizedHandler(() => setCurrentUser(null));
+    if (session.token) {
+      authApi.me()
+        .then((user) => {
+          session.save(session.token, user);
+          setCurrentUser(user);
+        })
+        .catch((err) => console.error("Could not restore login session.", err));
+    }
 
     if ('speechSynthesis' in window) {
       const updateVoices = () => {
@@ -230,6 +270,17 @@ export default function App() {
       window.speechSynthesis.onvoiceschanged = updateVoices;
     }
   }, []);
+
+  // B2B data is admin-only on the backend, so load it only for admins.
+  useEffect(() => {
+    if (isAdmin) {
+      fetchAnalytics();
+    } else {
+      setAnalyticsSummary(null);
+      setHeatmapRows([]);
+      setAdCampaigns([]);
+    }
+  }, [isAdmin]);
 
   const playAudio = (textToRead, lang = selectedLang) => {
     if (!('speechSynthesis' in window)) return;
@@ -288,65 +339,58 @@ export default function App() {
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
-    if (!authForm.phone || authForm.phone.length < 10) {
+    if (authForm.phone.replace(/\D/g, '').length < 10) {
       setAuthError('Please enter a valid phone number (at least 10 digits).');
       return;
     }
+    const adminKey = authForm.admin_key.trim() || undefined;
     const payload = {
       name: authForm.name || 'Registered Farmer',
       phone: authForm.phone,
-      district: authForm.district || 'Karachi'
+      district: authForm.district || 'Karachi',
+      admin_key: adminKey
     };
     try {
-      let response = await fetch('http://127.0.0.1:8001/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (response.status === 400) {
-        response = await fetch('http://127.0.0.1:8001/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: authForm.phone })
-        });
+      let data;
+      try {
+        data = await authApi.register(payload);
+      } catch (err) {
+        // 409 = this phone already has an account, so log in instead.
+        if (err.response?.status !== 409) throw err;
+        data = await authApi.login({ phone: authForm.phone, admin_key: adminKey });
       }
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.detail || 'Authentication failed');
+      session.save(data.token, data.user);
       setCurrentUser(data.user);
       setIsAuthModalOpen(false);
-      setAuthForm({ name: '', phone: '', district: 'Karachi' });
-      fetchUserAnalytics();
+      setAuthForm({ name: '', phone: '', district: 'Karachi', admin_key: '' });
     } catch (err) {
-      setAuthError(err.message);
+      setAuthError(errorMessage(err, 'Authentication failed. Please check that the backend is running.'));
     }
   };
 
   const handleAddCropSubmit = async (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      setAddCropStatus(t.loginRequired);
+      setIsAuthModalOpen(true);
+      return;
+    }
     if (!addCropForm.name || !addCropForm.seed_identification || !addCropForm.planting) {
       setAddCropStatus('Please fill in Crop Name, Seed Info, and Planting Guide.');
       return;
     }
     setAddCropStatus('Saving to Database...');
     try {
-      const response = await fetch('http://127.0.0.1:8001/cultivation/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(addCropForm)
-      });
-      if (response.ok) {
-        setAddCropStatus('Success! Saved to Database.');
-        setTimeout(() => {
-          setIsAddCropModalOpen(false);
-          setAddCropStatus('');
-          setAddCropForm({ name: '', seed_identification: '', planting: '', temperature: '', watering: '', fertilizer: '', harvest: '' });
-          fetchCultivationProfiles();
-        }, 1000);
-      } else {
-        setAddCropStatus('Failed to save crop card.');
-      }
+      await cultivationApi.add(addCropForm);
+      setAddCropStatus('Success! Saved to Database.');
+      setTimeout(() => {
+        setIsAddCropModalOpen(false);
+        setAddCropStatus('');
+        setAddCropForm({ name: '', seed_identification: '', planting: '', temperature: '', watering: '', fertilizer: '', harvest: '' });
+        fetchCultivationProfiles();
+      }, 1000);
     } catch (err) {
-      setAddCropStatus('Network error connecting to backend.');
+      setAddCropStatus(errorMessage(err, 'Network error connecting to backend.'));
     }
   };
 
@@ -358,24 +402,16 @@ export default function App() {
     }
     setAddAdStatus('Launching Campaign...');
     try {
-      const response = await fetch('http://127.0.0.1:8001/analytics/ads/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newAdForm)
-      });
-      if (response.ok) {
-        setAddAdStatus('Success! Ad campaign launched.');
-        setTimeout(() => {
-          setIsAddAdModalOpen(false);
-          setAddAdStatus('');
-          setNewAdForm({ title: '', target_district: 'Sukkur', budget: 'Rs. 20,000' });
-          fetchUserAnalytics();
-        }, 1000);
-      } else {
-        setAddAdStatus('Failed to launch campaign.');
-      }
+      await analyticsApi.createAd(newAdForm);
+      setAddAdStatus('Success! Ad campaign launched.');
+      setTimeout(() => {
+        setIsAddAdModalOpen(false);
+        setAddAdStatus('');
+        setNewAdForm({ title: '', target_district: 'Sukkur', budget: 'Rs. 20,000' });
+        fetchAnalytics();
+      }, 1000);
     } catch (err) {
-      setAddAdStatus('Network error connecting to backend.');
+      setAddAdStatus(errorMessage(err, 'Network error connecting to backend.'));
     }
   };
 
@@ -385,85 +421,46 @@ export default function App() {
       setSelectedImage(file);
       setPreviewUrl(URL.createObjectURL(file));
       setResult(null);
+      setDiagnoseError('');
     }
   };
 
   const handleAnalyze = async () => {
     if (!selectedImage) return;
     setLoading(true);
-    const formData = new FormData();
-    formData.append('file', selectedImage);
-
+    setDiagnoseError('');
     try {
-      const response = await fetch('http://127.0.0.1:8001/predict', { method: 'POST', body: formData });
-      if (!response.ok) throw new Error('Analysis failed.');
-      const data = await response.json();
+      // The backend records the scan itself when a farmer is logged in.
+      const data = await diagnoseLeaf(selectedImage);
       setResult(data);
-
-      const diseaseNameForLog = data.disease_en || "Potato - Early Blight";
-      if (currentUser) {
-        await fetch('http://127.0.0.1:8001/analytics/log_scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phone: currentUser.phone,
-            disease: diseaseNameForLog,
-            district: currentUser.district
-          })
-        });
-        fetchUserAnalytics();
-      }
-
-      const speechText = selectedLang === 'ur-PK'
-        ? `تشخیص شدہ بیماری: ${data.disease_ur}۔ علاج: ${data.recommendation_ur.pesticide}۔ مقدار: ${data.recommendation_ur.dosage}`
-        : `Detected condition: ${data.disease_en}. Treatment: ${data.recommendation_en.pesticide}`;
-      playAudio(speechText, selectedLang);
-
+      if (isAdmin) fetchAnalytics();
+      playAudio(buildSpeechText(data, selectedLang), selectedLang);
     } catch (err) {
-      const mockResult = {
-        disease_en: "Potato - Early Blight",
-        disease_ur: "آلو - ارلی بلائٹ (ابتدائی جھلسائو)",
-        recommendation_en: {
-          pesticide: "Copper Fungicide / Mancozeb 75 WP",
-          dosage: "Mix 2 grams per 1 Liter of clean water. Spray thoroughly on upper and lower leaf surfaces every 7-10 days."
-        },
-        recommendation_ur: {
-          pesticide: "کاپر فنگسائیڈ / مینکو زیب 75 ڈبلیو پی",
-          dosage: "2 گرام دوائی کو 1 لیٹر صاف پانی میں مکس کریں اور پتے کے اوپر اور نیچے سپرے کریں۔"
-        }
-      };
-      setResult(mockResult);
-      if (currentUser) {
-        fetch('http://127.0.0.1:8001/analytics/log_scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: currentUser.phone, disease: mockResult.disease_en, district: currentUser.district })
-        });
-      }
-      const speechText = selectedLang === 'ur-PK'
-        ? `تشخیص شدہ بیماری: ${mockResult.disease_ur}۔ علاج: ${mockResult.recommendation_ur.pesticide}`
-        : `Detected condition: ${mockResult.disease_en}. Treatment: ${mockResult.recommendation_en.pesticide}`;
-      playAudio(speechText, selectedLang);
+      setResult(null);
+      setDiagnoseError(err.response?.data?.detail || t.diagnoseError);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleWaImageUpload = (e) => {
+  const handleWaImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setWaMessages(prev => [...prev, { sender: 'user', image: imageUrl, text: 'متاثرہ پتے کا نمونہ' }]);
-      setWaProcessing(true);
-      setTimeout(() => {
-        const botReply = selectedLang === 'ur-PK'
-          ? `🌿 *تشخیصی رپورٹ (AI Crop Guardian)*\n\n🔍 *بیماری:* آلو - ارلی بلائٹ (Early Blight)\n💊 *دوا:* کاپر فنگسائیڈ 2 گرام فی لیٹر سپرے کریں۔`
-          : `🌿 *Diagnostic Report (AI Crop Guardian)*\n\n🔍 *Disease:* Potato - Early Blight\n💊 *Treatment:* Spray Copper Fungicide 2g per liter.`;
-        setWaMessages(prev => [...prev, { sender: 'bot', text: botReply }]);
-        setWaProcessing(false);
-        playAudio(botReply, selectedLang);
-      }, 1500);
+    e.target.value = '';
+    if (!file) return;
+    const imageUrl = URL.createObjectURL(file);
+    setWaMessages(prev => [...prev, { sender: 'user', image: imageUrl, text: 'متاثرہ پتے کا نمونہ' }]);
+    setWaProcessing(true);
+    let botReply;
+    try {
+      botReply = buildWhatsappReply(await diagnoseLeaf(file), selectedLang);
+    } catch (err) {
+      botReply = selectedLang === 'ur-PK'
+        ? 'معذرت، ابھی تشخیص نہیں ہو سکی۔ براہ کرم دوبارہ کوشش کریں۔'
+        : `Sorry, the diagnosis failed. ${errorMessage(err, 'Please try again.')}`;
     }
+    setWaMessages(prev => [...prev, { sender: 'bot', text: botReply }]);
+    setWaProcessing(false);
+    playAudio(botReply, selectedLang);
   };
 
   const handleWaSendMessage = (e) => {
@@ -490,8 +487,8 @@ export default function App() {
   const headerBg = isDarkMode ? 'bg-slate-900/50 border-slate-800/80' : 'bg-white/80 border-slate-200';
   const dropzoneBg = isDarkMode ? 'bg-slate-950/40 border-slate-700' : 'bg-slate-50 border-slate-300';
 
-  const getEconomics = (diseaseName) => {
-    if (!diseaseName || diseaseName.includes("healthy") || diseaseName === "Unrecognized Image") return null;
+  const getEconomics = (diagnosis) => {
+    if (!diagnosis?.recognized || diagnosis.is_healthy) return null;
     return { revenueAtRisk: "Rs. 95,000 / Acre", treatmentCost: "Rs. 3,000 / Acre", netSaved: "Rs. 92,000 / Acre" };
   };
 
@@ -524,7 +521,7 @@ export default function App() {
                 <p className="text-xs font-bold text-emerald-400">{currentUser.name}</p>
                 <p className="text-[10px] text-slate-400">{currentUser.phone}</p>
               </div>
-              <button onClick={() => setCurrentUser(null)} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-red-400 transition-colors mr-1">
+              <button onClick={handleLogout} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-red-400 transition-colors mr-1">
                 <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -644,6 +641,13 @@ export default function App() {
                   {t.reportTitle}
                 </h2>
                 
+                {diagnoseError && (
+                  <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-medium flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{diagnoseError}</span>
+                  </div>
+                )}
+
                 {!result ? (
                   <div className={`flex-1 flex flex-col items-center justify-center text-center p-8 border rounded-xl ${isDarkMode ? 'bg-slate-950/30 border-slate-800/80 text-slate-500' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
                     <Leaf className="w-10 h-10 mb-2 opacity-20" />
@@ -651,11 +655,29 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-4 animate-fadeIn">
-                    <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
-                      <span className="text-xs uppercase tracking-wider font-bold text-emerald-500">{t.detectedCond}</span>
+                    {result.mode === 'demo' && (
+                      <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-amber-400 text-xs font-bold flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        {t.demoBadge}
+                      </div>
+                    )}
+
+                    <div className={`p-4 border rounded-xl ${result.recognized ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-amber-500/10 border-amber-500/30'}`}>
+                      <span className={`text-xs uppercase tracking-wider font-bold ${result.recognized ? 'text-emerald-500' : 'text-amber-500'}`}>{t.detectedCond}</span>
                       <h3 className={`text-xl font-bold mt-0.5 capitalize ${textPrimary}`}>
                         {selectedLang === 'ur-PK' ? result.disease_ur : result.disease_en}
                       </h3>
+                      {result.confidence != null && (
+                        <div className="mt-3">
+                          <div className={`flex items-center justify-between text-xs font-semibold mb-1 ${textSecondary}`}>
+                            <span>{t.confidenceLabel}</span>
+                            <span>{Math.round(result.confidence * 100)}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div className="h-full rounded-full bg-emerald-500" style={{ width: `${Math.round(result.confidence * 100)}%` }}></div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     <div className={`p-4 border rounded-xl flex items-start gap-3 ${isDarkMode ? 'bg-slate-950/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
@@ -680,13 +702,8 @@ export default function App() {
                       </div>
                     </div>
 
-                    <button 
-                      onClick={() => {
-                        const speechText = selectedLang === 'ur-PK'
-                          ? `تشخیص شدہ بیماری: ${result.disease_ur}۔ علاج: ${result.recommendation_ur.pesticide}۔ مقدار: ${result.recommendation_ur.dosage}`
-                          : `Diagnosis: ${result.disease_en}. Treatment: ${result.recommendation_en.pesticide}. Dosage: ${result.recommendation_en.dosage}`;
-                        playAudio(speechText, selectedLang);
-                      }}
+                    <button
+                      onClick={() => playAudio(buildSpeechText(result, selectedLang), selectedLang)}
                       className="w-full mt-1 py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-md transition-all bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer"
                     >
                       <Volume2 className="w-4 h-4" /> {t.listenBtn}
@@ -708,7 +725,7 @@ export default function App() {
                       </button>
                     </div>
 
-                    {getEconomics(result.disease_en) && (
+                    {getEconomics(result) && (
                       <div className={`mt-1 border rounded-xl overflow-hidden ${isDarkMode ? 'border-slate-700' : 'border-slate-300'}`}>
                         <div className={`p-2.5 flex items-center gap-2 border-b ${isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-slate-100 border-slate-300 text-slate-700'}`}>
                           <Banknote className="w-4 h-4 text-emerald-500" />
@@ -717,11 +734,11 @@ export default function App() {
                         <div className="grid grid-cols-2 divide-x divide-slate-700/50">
                           <div className={`p-3 ${isDarkMode ? 'bg-slate-900/50' : 'bg-white'}`}>
                             <p className={`text-xs flex items-center gap-1 ${textSecondary}`}><TrendingDown className="w-3 h-3 text-red-500"/> {t.estYieldLoss}</p>
-                            <p className="text-sm font-bold text-red-500 mt-1">{getEconomics(result.disease_en).revenueAtRisk}</p>
+                            <p className="text-sm font-bold text-red-500 mt-1">{getEconomics(result).revenueAtRisk}</p>
                           </div>
                           <div className={`p-3 ${isDarkMode ? 'bg-slate-900/50' : 'bg-white'}`}>
                             <p className={`text-xs flex items-center gap-1 ${textSecondary}`}><TrendingUp className="w-3 h-3 text-emerald-500"/> {t.projectedROI}</p>
-                            <p className="text-sm font-bold text-emerald-500 mt-1">{getEconomics(result.disease_en).netSaved}</p>
+                            <p className="text-sm font-bold text-emerald-500 mt-1">{getEconomics(result).netSaved}</p>
                           </div>
                         </div>
                       </div>
@@ -772,6 +789,21 @@ export default function App() {
               </div>
             </div>
 
+            {!isAdmin ? (
+              <div className={`border rounded-2xl p-10 flex flex-col items-center text-center gap-4 ${cardBg}`}>
+                <div className="p-4 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                  <Lock className="w-8 h-8" />
+                </div>
+                <h3 className={`text-xl font-bold ${textPrimary}`}>{t.b2bRestrictedTitle}</h3>
+                <p className={`text-sm max-w-md ${textSecondary}`}>{t.b2bRestrictedDesc}</p>
+                {!currentUser && (
+                  <button onClick={() => setIsAuthModalOpen(true)} className="px-5 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center gap-1.5 shadow-md transition-all cursor-pointer">
+                    <LogIn className="w-4 h-4" /> {t.loginBtn}
+                  </button>
+                )}
+              </div>
+            ) : (
+            <>
             {/* MONGODB SUMMARY CARDS (NO REGISTERED FARMERS) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className={`p-6 rounded-2xl border ${cardBg} flex items-center gap-4`}>
@@ -780,7 +812,7 @@ export default function App() {
                 </div>
                 <div>
                   <p className={`text-xs font-bold uppercase ${textSecondary}`}>{t.kpiScans}</p>
-                  <p className={`text-3xl font-black mt-1 ${textPrimary}`}>{totalScansCount}</p>
+                  <p className={`text-3xl font-black mt-1 ${textPrimary}`}>{analyticsSummary?.total_scans ?? 0}</p>
                 </div>
               </div>
 
@@ -800,7 +832,7 @@ export default function App() {
                 </div>
                 <div>
                   <p className={`text-xs font-bold uppercase ${textSecondary}`}>{t.kpiSaved}</p>
-                  <p className={`text-3xl font-black mt-1 text-amber-400`}>Rs. 8.42M</p>
+                  <p className={`text-3xl font-black mt-1 text-amber-400`} title={analyticsSummary?.estimate_basis}>{formatPKR(analyticsSummary?.estimated_saved_pkr)}</p>
                 </div>
               </div>
             </div>
@@ -820,8 +852,11 @@ export default function App() {
               </div>
 
               <div className="grid md:grid-cols-3 gap-4">
-                {adCampaigns.map((ad, idx) => (
-                  <div key={idx} className={`p-4 rounded-xl border flex flex-col justify-between gap-3 ${isDarkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+                {adCampaigns.length === 0 && (
+                  <p className={`col-span-full text-center text-sm py-6 ${textSecondary}`}>{t.noAdsYet}</p>
+                )}
+                {adCampaigns.map((ad) => (
+                  <div key={ad.id} className={`p-4 rounded-xl border flex flex-col justify-between gap-3 ${isDarkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded-full font-bold uppercase">
@@ -861,8 +896,13 @@ export default function App() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/40">
-                    {districtData.map((row, idx) => (
-                      <tr key={idx} className={`hover:bg-emerald-500/5 transition-colors ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+                    {heatmapRows.length === 0 && (
+                      <tr>
+                        <td colSpan={5} className={`py-8 px-4 text-center text-sm ${textSecondary}`}>{t.noScansYet}</td>
+                      </tr>
+                    )}
+                    {heatmapRows.map((row) => (
+                      <tr key={row.district} className={`hover:bg-emerald-500/5 transition-colors ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>
                         <td className="py-4 px-4 font-bold flex items-center gap-2">
                           <MapPin className="w-4 h-4 text-emerald-500 shrink-0" />
                           {row.district}
@@ -889,6 +929,8 @@ export default function App() {
                 </table>
               </div>
             </div>
+            </>
+            )}
           </div>
         )}
 
@@ -955,6 +997,16 @@ export default function App() {
                             <p className={`text-xs mt-0.5 leading-relaxed ${textSecondary}`}>{info.planting}</p>
                           </div>
                         </div>
+
+                        {info.sunlight && (
+                          <div className="flex items-start gap-2.5">
+                            <Sun className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="text-xs font-bold uppercase text-yellow-400">Sunlight</h4>
+                              <p className={`text-xs mt-0.5 leading-relaxed ${textSecondary}`}>{info.sunlight}</p>
+                            </div>
+                          </div>
+                        )}
 
                         {info.temperature && (
                           <div className="flex items-start gap-2.5">
@@ -1178,6 +1230,11 @@ export default function App() {
                   <option value="Larkana">Larkana (لاڑکانہ)</option>
                   <option value="Sheikhupura">Sheikhupura (شیخوپورہ)</option>
                 </select>
+              </div>
+
+              <div>
+                <label className={`block text-xs font-bold uppercase tracking-wider mb-1 ${textSecondary}`}>{t.adminKeyLabel}</label>
+                <input type="password" autoComplete="off" value={authForm.admin_key} onChange={(e) => setAuthForm({ ...authForm, admin_key: e.target.value })} placeholder="••••••" className={`w-full p-3 rounded-xl border text-sm focus:outline-none focus:border-emerald-500 ${isDarkMode ? 'bg-slate-950 border-slate-700 text-white' : 'bg-slate-50 border-slate-300'}`} />
               </div>
 
               <button type="submit" className="w-full py-3 px-4 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer mt-2">

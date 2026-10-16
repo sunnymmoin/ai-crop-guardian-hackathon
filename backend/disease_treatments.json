@@ -1,154 +1,306 @@
 {
     "Apple___Apple_scab": {
+        "name_en": "Apple - Apple Scab",
+        "name_ur": "سیب - ایپل اسکیب (خارش کی بیماری)",
         "pesticide": "Apply Captan or Mancozeb fungicides.",
-        "dosage": "Spray every 7-10 days from green tip stage until petals fall."
+        "dosage": "Spray every 7-10 days from green tip stage until petals fall.",
+        "pesticide_ur": "کیپٹان یا مینکوزیب فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "سبز کونپل نکلنے سے لے کر پھول کی پتیاں گرنے تک ہر 7 سے 10 دن بعد سپرے کریں۔"
     },
     "Apple___Black_rot": {
+        "name_en": "Apple - Black Rot",
+        "name_ur": "سیب - بلیک راٹ (سیاہ سڑن)",
         "pesticide": "Prune infected branches and apply Captan fungicide.",
-        "dosage": "2 tablespoons per gallon applied during the pink bud stage."
+        "dosage": "2 tablespoons per gallon applied during the pink bud stage.",
+        "pesticide_ur": "متاثرہ شاخیں کاٹ دیں اور کیپٹان فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "گلابی کلی کے مرحلے پر 2 کھانے کے چمچ فی گیلن پانی میں ملا کر سپرے کریں۔"
     },
     "Apple___Cedar_apple_rust": {
+        "name_en": "Apple - Cedar Apple Rust",
+        "name_ur": "سیب - سیڈار ایپل رسٹ (زنگ کی بیماری)",
         "pesticide": "Apply Myclobutanil or Copper-based fungicides.",
-        "dosage": "Spray when blossom buds show pink and repeat every 7-10 days."
+        "dosage": "Spray when blossom buds show pink and repeat every 7-10 days.",
+        "pesticide_ur": "مائیکلوبیوٹانل یا کاپر والی فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "جب پھول کی کلیاں گلابی ہوں تو سپرے کریں اور ہر 7 سے 10 دن بعد دہرائیں۔"
     },
     "Apple___healthy": {
+        "name_en": "Apple - Healthy",
+        "name_ur": "سیب - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain routine pruning and monitoring."
+        "dosage": "Maintain routine pruning and monitoring.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "معمول کے مطابق کٹائی چھٹائی اور نگرانی جاری رکھیں۔"
     },
     "Blueberry___healthy": {
+        "name_en": "Blueberry - Healthy",
+        "name_ur": "بلو بیری - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain soil acidity (pH 4.5-5.5) and routine watering."
+        "dosage": "Maintain soil acidity (pH 4.5-5.5) and routine watering.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "مٹی کی تیزابیت (pH 4.5 سے 5.5) برقرار رکھیں اور باقاعدگی سے پانی دیں۔"
     },
     "Cherry_(including_sour)___Powdery_mildew": {
+        "name_en": "Cherry - Powdery Mildew",
+        "name_ur": "چیری - پاؤڈری ملڈیو (سفوفی پھپھوندی)",
         "pesticide": "Apply Sulfur or Potassium Bicarbonate sprays.",
-        "dosage": "Spray every 10-14 days at first sign of white powdery spots."
+        "dosage": "Spray every 10-14 days at first sign of white powdery spots.",
+        "pesticide_ur": "سلفر یا پوٹاشیم بائی کاربونیٹ کا سپرے کریں۔",
+        "dosage_ur": "سفید پاؤڈر جیسے دھبے نظر آتے ہی ہر 10 سے 14 دن بعد سپرے کریں۔"
     },
     "Cherry_(including_sour)___healthy": {
+        "name_en": "Cherry - Healthy",
+        "name_ur": "چیری - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Ensure good air circulation and routine watering."
+        "dosage": "Ensure good air circulation and routine watering.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "ہوا کا اچھا گزر یقینی بنائیں اور باقاعدگی سے پانی دیں۔"
     },
     "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+        "name_en": "Corn - Cercospora / Gray Leaf Spot",
+        "name_ur": "مکئی - سرکوسپورا / گرے لیف اسپاٹ (پتوں کے دھبے)",
         "pesticide": "Apply Pyraclostrobin or Azoxystrobin fungicides.",
-        "dosage": "Apply at tasseling (VT stage) if lesions reach the ear leaf."
+        "dosage": "Apply at tasseling (VT stage) if lesions reach the ear leaf.",
+        "pesticide_ur": "پائیراکلوسٹروبن یا ایزوکسی اسٹروبن فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "اگر دھبے سٹے والے پتے تک پہنچ جائیں تو بور نکلنے کے مرحلے پر سپرے کریں۔"
     },
     "Corn_(maize)___Common_rust": {
+        "name_en": "Corn - Common Rust",
+        "name_ur": "مکئی - کامن رسٹ (زنگ کی بیماری)",
         "pesticide": "Apply Mancozeb or Propiconazole.",
-        "dosage": "Spray when pustules first appear on leaves, repeating after 7-14 days."
+        "dosage": "Spray when pustules first appear on leaves, repeating after 7-14 days.",
+        "pesticide_ur": "مینکوزیب یا پروپیکونازول استعمال کریں۔",
+        "dosage_ur": "پتوں پر زنگ کے ابھار نظر آتے ہی سپرے کریں اور 7 سے 14 دن بعد دہرائیں۔"
     },
     "Corn_(maize)___Northern_Leaf_Blight": {
+        "name_en": "Corn - Northern Leaf Blight",
+        "name_ur": "مکئی - ناردرن لیف بلائٹ (پتوں کا جھلساؤ)",
         "pesticide": "Apply Chlorothalonil or Azoxystrobin.",
-        "dosage": "Apply before tasseling if lesions are actively spreading."
+        "dosage": "Apply before tasseling if lesions are actively spreading.",
+        "pesticide_ur": "کلوروتھالونل یا ایزوکسی اسٹروبن استعمال کریں۔",
+        "dosage_ur": "اگر دھبے تیزی سے پھیل رہے ہوں تو بور نکلنے سے پہلے سپرے کریں۔"
     },
     "Corn_(maize)___healthy": {
+        "name_en": "Corn - Healthy",
+        "name_ur": "مکئی - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain proper nitrogen levels and soil moisture."
+        "dosage": "Maintain proper nitrogen levels and soil moisture.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "نائٹروجن کی مناسب مقدار اور مٹی کی نمی برقرار رکھیں۔"
     },
     "Grape___Black_rot": {
+        "name_en": "Grape - Black Rot",
+        "name_ur": "انگور - بلیک راٹ (سیاہ سڑن)",
         "pesticide": "Apply Mancozeb or Myclobutanil.",
-        "dosage": "Spray every 10-14 days starting when shoots are 2-4 inches long."
+        "dosage": "Spray every 10-14 days starting when shoots are 2-4 inches long.",
+        "pesticide_ur": "مینکوزیب یا مائیکلوبیوٹانل استعمال کریں۔",
+        "dosage_ur": "جب نئی شاخیں 2 سے 4 انچ لمبی ہوں تو سپرے شروع کریں اور ہر 10 سے 14 دن بعد دہرائیں۔"
     },
     "Grape___Esca_(Black_Measles)": {
+        "name_en": "Grape - Esca (Black Measles)",
+        "name_ur": "انگور - ایسکا (بلیک میزلز)",
         "pesticide": "No effective chemical cure. Prune out infected wood.",
-        "dosage": "Burn or discard infected wood immediately. Apply wound sealant after pruning."
+        "dosage": "Burn or discard infected wood immediately. Apply wound sealant after pruning.",
+        "pesticide_ur": "اس کا کوئی مؤثر کیمیائی علاج نہیں۔ متاثرہ لکڑی کاٹ دیں۔",
+        "dosage_ur": "متاثرہ لکڑی فوراً جلا دیں یا تلف کریں۔ کٹائی کے بعد زخم پر سیلنٹ لگائیں۔"
     },
     "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+        "name_en": "Grape - Leaf Blight (Isariopsis Leaf Spot)",
+        "name_ur": "انگور - لیف بلائٹ (پتوں کا جھلساؤ)",
         "pesticide": "Apply Copper-based fungicides.",
-        "dosage": "Spray after harvest to protect foliage and reduce overwintering spores."
+        "dosage": "Spray after harvest to protect foliage and reduce overwintering spores.",
+        "pesticide_ur": "کاپر والی فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "پتوں کی حفاظت اور سردیوں میں بچ جانے والے جراثیم کم کرنے کے لیے فصل اترنے کے بعد سپرے کریں۔"
     },
     "Grape___healthy": {
+        "name_en": "Grape - Healthy",
+        "name_ur": "انگور - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain canopy management for adequate airflow."
+        "dosage": "Maintain canopy management for adequate airflow.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "ہوا کے مناسب گزر کے لیے بیل کی شاخوں کی ترتیب برقرار رکھیں۔"
     },
     "Orange___Haunglongbing_(Citrus_greening)": {
+        "name_en": "Orange - Citrus Greening (Huanglongbing)",
+        "name_ur": "مالٹا / سنگترہ - سٹرس گریننگ (ہوانگ لونگ بنگ)",
         "pesticide": "Control Asian citrus psyllid vector with Imidacloprid.",
-        "dosage": "Apply as a soil drench prior to new flush growth. Remove severely infected trees."
+        "dosage": "Apply as a soil drench prior to new flush growth. Remove severely infected trees.",
+        "pesticide_ur": "بیماری پھیلانے والے سٹرس سلا کیڑے کو امیڈاکلوپرڈ سے کنٹرول کریں۔",
+        "dosage_ur": "نئی پھوٹ سے پہلے جڑوں میں مٹی پر ڈالیں۔ شدید متاثرہ درخت نکال دیں۔"
     },
     "Peach___Bacterial_spot": {
+        "name_en": "Peach - Bacterial Spot",
+        "name_ur": "آڑو - بیکٹیریل اسپاٹ (بیکٹیریا کے دھبے)",
         "pesticide": "Apply Copper or Oxytetracycline.",
-        "dosage": "Apply Copper at leaf drop in fall, and Oxytetracycline starting at petal fall."
+        "dosage": "Apply Copper at leaf drop in fall, and Oxytetracycline starting at petal fall.",
+        "pesticide_ur": "کاپر یا آکسی ٹیٹراسائکلین استعمال کریں۔",
+        "dosage_ur": "خزاں میں پتے گرنے پر کاپر اور پھول کی پتیاں گرنے کے بعد آکسی ٹیٹراسائکلین سپرے کریں۔"
     },
     "Peach___healthy": {
+        "name_en": "Peach - Healthy",
+        "name_ur": "آڑو - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain routine pruning and monitoring."
+        "dosage": "Maintain routine pruning and monitoring.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "معمول کے مطابق کٹائی چھٹائی اور نگرانی جاری رکھیں۔"
     },
     "Pepper,_bell___Bacterial_spot": {
+        "name_en": "Bell Pepper - Bacterial Spot",
+        "name_ur": "شملہ مرچ - بیکٹیریل اسپاٹ (بیکٹیریا کے دھبے)",
         "pesticide": "Apply Copper fungicides mixed with Mancozeb.",
-        "dosage": "Spray every 7-10 days during warm, wet weather."
+        "dosage": "Spray every 7-10 days during warm, wet weather.",
+        "pesticide_ur": "کاپر فنگسائیڈ کو مینکوزیب کے ساتھ ملا کر استعمال کریں۔",
+        "dosage_ur": "گرم اور مرطوب موسم میں ہر 7 سے 10 دن بعد سپرے کریں۔"
     },
     "Pepper,_bell___healthy": {
+        "name_en": "Bell Pepper - Healthy",
+        "name_ur": "شملہ مرچ - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain even soil moisture and monitor for aphids."
+        "dosage": "Maintain even soil moisture and monitor for aphids.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "مٹی میں یکساں نمی رکھیں اور سست تیلے (ایفڈ) پر نظر رکھیں۔"
     },
     "Potato___Early_blight": {
+        "name_en": "Potato - Early Blight",
+        "name_ur": "آلو - ارلی بلائٹ (ابتدائی جھلساؤ)",
         "pesticide": "Apply Mancozeb or Chlorothalonil based fungicides.",
-        "dosage": "Spray every 7-10 days upon first sign of leaf spots; ensure complete foliage coverage."
+        "dosage": "Spray every 7-10 days upon first sign of leaf spots; ensure complete foliage coverage.",
+        "pesticide_ur": "مینکوزیب یا کلوروتھالونل والی فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "پتوں پر دھبے نظر آتے ہی ہر 7 سے 10 دن بعد سپرے کریں اور پورے پتے اچھی طرح بھگو دیں۔"
     },
     "Potato___Late_blight": {
+        "name_en": "Potato - Late Blight",
+        "name_ur": "آلو - لیٹ بلائٹ (پچھیتا جھلساؤ)",
         "pesticide": "Apply Copper-based fungicides or Chlorothalonil.",
-        "dosage": "Apply every 5-7 days during wet weather conditions."
+        "dosage": "Apply every 5-7 days during wet weather conditions.",
+        "pesticide_ur": "کاپر والی فنگسائیڈ یا کلوروتھالونل استعمال کریں۔",
+        "dosage_ur": "بارش اور نمی والے موسم میں ہر 5 سے 7 دن بعد سپرے کریں۔"
     },
     "Potato___healthy": {
+        "name_en": "Potato - Healthy",
+        "name_ur": "آلو - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain routine watering and monitoring."
+        "dosage": "Maintain routine watering and monitoring.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "معمول کے مطابق پانی دیں اور نگرانی جاری رکھیں۔"
     },
     "Raspberry___healthy": {
+        "name_en": "Raspberry - Healthy",
+        "name_ur": "رس بھری - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Prune old canes after harvest to maintain airflow."
+        "dosage": "Prune old canes after harvest to maintain airflow.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "ہوا کے گزر کے لیے فصل اترنے کے بعد پرانی شاخیں کاٹ دیں۔"
     },
     "Soybean___healthy": {
+        "name_en": "Soybean - Healthy",
+        "name_ur": "سویابین - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Monitor for root rot in poorly drained soils."
+        "dosage": "Monitor for root rot in poorly drained soils.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "جہاں پانی کا نکاس کم ہو وہاں جڑ کی سڑن پر نظر رکھیں۔"
     },
     "Squash___Powdery_mildew": {
+        "name_en": "Squash - Powdery Mildew",
+        "name_ur": "کدو - پاؤڈری ملڈیو (سفوفی پھپھوندی)",
         "pesticide": "Apply Neem oil, Sulfur, or Potassium Bicarbonate.",
-        "dosage": "Spray thoroughly on upper and lower leaf surfaces every 7-10 days."
+        "dosage": "Spray thoroughly on upper and lower leaf surfaces every 7-10 days.",
+        "pesticide_ur": "نیم کا تیل، سلفر یا پوٹاشیم بائی کاربونیٹ استعمال کریں۔",
+        "dosage_ur": "ہر 7 سے 10 دن بعد پتوں کے اوپر اور نیچے دونوں طرف اچھی طرح سپرے کریں۔"
     },
     "Strawberry___Leaf_scorch": {
+        "name_en": "Strawberry - Leaf Scorch",
+        "name_ur": "اسٹرابیری - لیف اسکارچ (پتوں کا جھلسنا)",
         "pesticide": "Apply protective fungicides like Captan or Myclobutanil.",
-        "dosage": "Spray every 7-14 days starting at early bloom. Ensure good weed control for airflow."
+        "dosage": "Spray every 7-14 days starting at early bloom. Ensure good weed control for airflow.",
+        "pesticide_ur": "کیپٹان یا مائیکلوبیوٹانل جیسی حفاظتی فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "پھول آنے کے شروع سے ہر 7 سے 14 دن بعد سپرے کریں۔ ہوا کے گزر کے لیے جڑی بوٹیاں صاف رکھیں۔"
     },
     "Strawberry___healthy": {
+        "name_en": "Strawberry - Healthy",
+        "name_ur": "اسٹرابیری - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain mulch layer to keep fruit off the soil."
+        "dosage": "Maintain mulch layer to keep fruit off the soil.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "پھل کو مٹی سے دور رکھنے کے لیے ملچ (بھوسے) کی تہہ برقرار رکھیں۔"
     },
     "Tomato___Bacterial_spot": {
+        "name_en": "Tomato - Bacterial Spot",
+        "name_ur": "ٹماٹر - بیکٹیریل اسپاٹ (بیکٹیریا کے دھبے)",
         "pesticide": "Apply Copper fungicides mixed with Mancozeb.",
-        "dosage": "Spray every 7-10 days, avoiding overhead watering."
+        "dosage": "Spray every 7-10 days, avoiding overhead watering.",
+        "pesticide_ur": "کاپر فنگسائیڈ کو مینکوزیب کے ساتھ ملا کر استعمال کریں۔",
+        "dosage_ur": "ہر 7 سے 10 دن بعد سپرے کریں اور پودوں پر اوپر سے پانی نہ ڈالیں۔"
     },
     "Tomato___Early_blight": {
+        "name_en": "Tomato - Early Blight",
+        "name_ur": "ٹماٹر - ارلی بلائٹ (ابتدائی جھلساؤ)",
         "pesticide": "Apply Mancozeb or Copper-based fungicides. Remove infected lower leaves.",
-        "dosage": "Spray every 7-14 days starting when disease first appears."
+        "dosage": "Spray every 7-14 days starting when disease first appears.",
+        "pesticide_ur": "مینکوزیب یا کاپر والی فنگسائیڈ استعمال کریں۔ نیچے کے متاثرہ پتے توڑ دیں۔",
+        "dosage_ur": "بیماری نظر آتے ہی سپرے شروع کریں اور ہر 7 سے 14 دن بعد دہرائیں۔"
     },
     "Tomato___Late_blight": {
+        "name_en": "Tomato - Late Blight",
+        "name_ur": "ٹماٹر - لیٹ بلائٹ (پچھیتا جھلساؤ)",
         "pesticide": "Apply Copper fungicide or Chlorothalonil immediately.",
-        "dosage": "1 tablespoon per gallon of water, applied every 7 days until harvest."
+        "dosage": "1 tablespoon per gallon of water, applied every 7 days until harvest.",
+        "pesticide_ur": "فوری طور پر کاپر فنگسائیڈ یا کلوروتھالونل استعمال کریں۔",
+        "dosage_ur": "1 کھانے کا چمچ فی گیلن پانی میں ملا کر فصل اترنے تک ہر 7 دن بعد سپرے کریں۔"
     },
     "Tomato___Leaf_Mold": {
+        "name_en": "Tomato - Leaf Mold",
+        "name_ur": "ٹماٹر - لیف مولڈ (پتوں کی پھپھوندی)",
         "pesticide": "Apply Chlorothalonil or Copper fungicides.",
-        "dosage": "Improve ventilation in greenhouses; spray every 7-10 days if symptoms spread."
+        "dosage": "Improve ventilation in greenhouses; spray every 7-10 days if symptoms spread.",
+        "pesticide_ur": "کلوروتھالونل یا کاپر فنگسائیڈ استعمال کریں۔",
+        "dosage_ur": "گرین ہاؤس میں ہوا کا گزر بہتر کریں۔ علامات پھیلیں تو ہر 7 سے 10 دن بعد سپرے کریں۔"
     },
     "Tomato___Septoria_leaf_spot": {
+        "name_en": "Tomato - Septoria Leaf Spot",
+        "name_ur": "ٹماٹر - سیپٹوریا لیف اسپاٹ (پتوں کے دھبے)",
         "pesticide": "Apply Chlorothalonil or Mancozeb.",
-        "dosage": "Spray every 7-10 days upon first sign of spots on lower leaves."
+        "dosage": "Spray every 7-10 days upon first sign of spots on lower leaves.",
+        "pesticide_ur": "کلوروتھالونل یا مینکوزیب استعمال کریں۔",
+        "dosage_ur": "نیچے کے پتوں پر دھبے نظر آتے ہی ہر 7 سے 10 دن بعد سپرے کریں۔"
     },
     "Tomato___Spider_mites Two-spotted_spider_mite": {
+        "name_en": "Tomato - Spider Mites",
+        "name_ur": "ٹماٹر - سرخ مکڑی (اسپائیڈر مائٹ)",
         "pesticide": "Apply Horticultural oil, Neem oil, or Miticides.",
-        "dosage": "Spray every 5-7 days, focusing heavily on the undersides of leaves."
+        "dosage": "Spray every 5-7 days, focusing heavily on the undersides of leaves.",
+        "pesticide_ur": "ہارٹیکلچرل آئل، نیم کا تیل یا مائٹ کش دوا استعمال کریں۔",
+        "dosage_ur": "ہر 5 سے 7 دن بعد سپرے کریں، خاص طور پر پتوں کی نچلی سطح پر۔"
     },
     "Tomato___Target_Spot": {
+        "name_en": "Tomato - Target Spot",
+        "name_ur": "ٹماٹر - ٹارگٹ اسپاٹ (گول دھبے)",
         "pesticide": "Apply Azoxystrobin or Chlorothalonil.",
-        "dosage": "Spray every 7-14 days; ensure adequate spacing between plants."
+        "dosage": "Spray every 7-14 days; ensure adequate spacing between plants.",
+        "pesticide_ur": "ایزوکسی اسٹروبن یا کلوروتھالونل استعمال کریں۔",
+        "dosage_ur": "ہر 7 سے 14 دن بعد سپرے کریں اور پودوں کے درمیان مناسب فاصلہ رکھیں۔"
     },
     "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+        "name_en": "Tomato - Yellow Leaf Curl Virus",
+        "name_ur": "ٹماٹر - ییلو لیف کرل وائرس (پتہ مروڑ)",
         "pesticide": "Control whitefly vectors using Insecticidal soap or Imidacloprid.",
-        "dosage": "No cure for the virus. Remove and destroy infected plants immediately to prevent spread."
+        "dosage": "No cure for the virus. Remove and destroy infected plants immediately to prevent spread.",
+        "pesticide_ur": "وائرس پھیلانے والی سفید مکھی کو کیڑے مار صابن یا امیڈاکلوپرڈ سے کنٹرول کریں۔",
+        "dosage_ur": "اس وائرس کا کوئی علاج نہیں۔ پھیلاؤ روکنے کے لیے متاثرہ پودے فوراً اکھاڑ کر تلف کریں۔"
     },
     "Tomato___Tomato_mosaic_virus": {
+        "name_en": "Tomato - Mosaic Virus",
+        "name_ur": "ٹماٹر - موزیک وائرس",
         "pesticide": "No chemical cure available.",
-        "dosage": "Remove and destroy infected plants. Wash hands and tools thoroughly to prevent mechanical transmission."
+        "dosage": "Remove and destroy infected plants. Wash hands and tools thoroughly to prevent mechanical transmission.",
+        "pesticide_ur": "اس کا کوئی کیمیائی علاج دستیاب نہیں۔",
+        "dosage_ur": "متاثرہ پودے اکھاڑ کر تلف کریں۔ بیماری پھیلنے سے روکنے کے لیے ہاتھ اور اوزار اچھی طرح دھوئیں۔"
     },
     "Tomato___healthy": {
+        "name_en": "Tomato - Healthy",
+        "name_ur": "ٹماٹر - صحت مند",
         "pesticide": "No intervention required.",
-        "dosage": "Maintain consistent watering and stake plants to keep leaves off the ground."
+        "dosage": "Maintain consistent watering and stake plants to keep leaves off the ground.",
+        "pesticide_ur": "کسی دوائی کی ضرورت نہیں۔",
+        "dosage_ur": "باقاعدگی سے پانی دیں اور پتوں کو زمین سے اوپر رکھنے کے لیے پودوں کو سہارا دیں۔"
     }
 }
