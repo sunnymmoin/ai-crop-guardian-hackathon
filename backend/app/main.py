@@ -32,7 +32,10 @@ async def lifespan(app: FastAPI):
         logger.info("Connected to MongoDB database '%s'.", settings.mongo_db)
     except PyMongoError as exc:
         # Keep serving (diagnosis still works) and let /api/health report the outage.
-        logger.error("MongoDB is not reachable (%s). Check MONGO_URI in backend/.env and restart.", exc)
+        logger.error(
+            "MongoDB is not reachable (%s). On Atlas, allow this computer's IP under Network Access, then restart.",
+            type(exc).__name__,
+        )
 
     app.state.treatments = TreatmentBook(BACKEND_DIR / "disease_treatments.json")
     app.state.predictor = Predictor(

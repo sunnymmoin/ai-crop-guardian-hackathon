@@ -1,12 +1,13 @@
 import io
 import os
 
-# Must be set before the app is imported; environment variables take priority over backend/.env.
+# Must be set before the app is imported. Environment variables override the defaults in
+# app/config.py, so tests use a local throwaway database and never touch Atlas.
 os.environ.update({
     "MONGO_URI": os.environ.get("TEST_MONGO_URI", "mongodb://localhost:27017"),
     "MONGO_DB": "crop_guardian_test",
     "JWT_SECRET": "test-secret-that-is-at-least-32-bytes-long",
-    "ADMIN_PHONES": "03009999999",
+    "ADMIN_PHONES": "03009999999,03000000001",
     "ADMIN_KEY": "test-admin-key",
     "RATE_LIMIT_AUTH_PER_MIN": "1000",
     "RATE_LIMIT_PREDICT_PER_MIN": "1000",

@@ -1,5 +1,3 @@
-import logging
-import secrets
 from functools import lru_cache
 from pathlib import Path
 from typing import Annotated
@@ -9,11 +7,10 @@ from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 
-logger = logging.getLogger("crop_guardian")
-
 
 class Settings(BaseSettings):
-    """All runtime configuration. Values come from environment variables or backend/.env."""
+    """All runtime configuration. The defaults below run the project as-is, with no .env file.
+    Any value can still be overridden with an environment variable of the same name."""
 
     model_config = SettingsConfigDict(
         env_file=BACKEND_DIR / ".env",
@@ -22,17 +19,17 @@ class Settings(BaseSettings):
         protected_namespaces=("settings_",),
     )
 
-    # --- Database ---
-    mongo_uri: str = "mongodb://localhost:27017"
+    # --- Database (the team's shared MongoDB Atlas cluster) ---
+    mongo_uri: str = "mongodb+srv://sunnymmoin_db_user:fXDkuLCtz1Y2dhVI@cluster0.dh3tmxx.mongodb.net/?retryWrites=true&w=majority"
     mongo_db: str = "crop_guardian_db"
     seed_crops: bool = True
 
-    # --- Auth ---
-    jwt_secret: str = ""
+    # --- Auth (demo credentials, listed in README) ---
+    jwt_secret: str = "ai-crop-guardian-demo-jwt-secret-2026"
     jwt_algorithm: str = "HS256"
     jwt_expire_days: int = 30
-    admin_phones: Annotated[list[str], NoDecode] = []
-    admin_key: str = ""
+    admin_phones: Annotated[list[str], NoDecode] = ["03000000001"]
+    admin_key: str = "cropguardian-admin-2026"
 
     # --- HTTP ---
     cors_origins: Annotated[list[str], NoDecode] = [
@@ -62,9 +59,4 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    settings = Settings()
-    if not settings.jwt_secret:
-        # A random secret keeps tokens unforgeable, but logins reset on every restart.
-        settings.jwt_secret = secrets.token_urlsafe(32)
-        logger.warning("JWT_SECRET is not set; using a temporary secret (users will be logged out on restart).")
-    return settings
+    return Settings()
